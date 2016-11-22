@@ -10,13 +10,13 @@ import NewGame from 'components/NewGame';
 import { browserHistory } from 'react-router';
 
 import { Link } from 'react-router';
-import fetchJudge from 'utils/judges';
 
 export default class Home extends React.Component {
   state = {
     games: [],
     user: firebase.auth().currentUser,
     selectedGame: null,
+    options: {},
   }
   permissionsRef = null;
   gamesRef = null;
@@ -41,9 +41,7 @@ export default class Home extends React.Component {
     this.permissionsRef.off();
   }
 
-  createGame = (type) => {
-    var judge = fetchJudge(type);
-    var game = judge.newGame();
+  createGame = (game) => {
     game.users = {};
     game.users[this.user] = true;
 
@@ -81,7 +79,7 @@ export default class Home extends React.Component {
             <p>Games: {games.length}</p>
             {links}
           </Well>
-          <NewGame createGame={this.createGame}/>
+          <NewGame createGame={this.createGame} uid={this.user}/>
         </Col>
       </Row>
       );

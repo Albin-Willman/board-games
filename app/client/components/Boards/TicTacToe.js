@@ -20,7 +20,7 @@ export default class Board extends React.Component {
       className += 'free';
       if(!winningLine) {
         var clickFunction = () => {
-          makeMove(i);
+          makeMove({ payload: i });
         };
       }
     } else if(data === 1) {

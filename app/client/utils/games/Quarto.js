@@ -17,7 +17,7 @@ export function newGame(){
   return game;
 }
 
-export function makeMove(game, action) {
+export function makeMove(game, action, uid) {
   var newGame = getNewGameState(game, action);
   var previousActions = game.actions || [];
   newGame.actions = [ ...previousActions, action];

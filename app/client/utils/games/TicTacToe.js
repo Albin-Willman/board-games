@@ -36,8 +36,8 @@ export function makeMove(game, action) {
   var actions = game.actions || [];
   var player = (actions.length % 2) + 1;
   var board = [...game.board];
-  board[action] = player;
-  return {
+  board[action.payload] = player;
+  return { ...game,
     actions: [...actions, action],
     board: board,
     winningLine: checkWin(board),

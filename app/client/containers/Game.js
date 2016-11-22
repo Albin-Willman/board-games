@@ -34,9 +34,25 @@ export default class Game extends React.Component {
   }
 
   makeMove = (action) => {
-    var { game, judge } = this.state;
-    var newGame = judge.makeMove(game, action);
-    this.ref.set(newGame);
+    var { game, judge, uid } = this.state;
+    if(game.nextPlayer === uid){
+      action.uid = uid;
+      var newGame = judge.makeMove(game, action);
+      newGame.nextPlayer = this.getNextPlayer(game, uid);
+      this.ref.set(newGame);
+    }
+  }
+
+  getNextPlayer(game, uid) {
+    var { nextPlayer, players, gameEnded } = game;
+    if(gameEnded) {
+      return '-';
+    }
+    if(nextPlayer !== uid) {
+      return nextPlayer;
+    }
+    var index = (players.indexOf(uid) + 1) % players.length;
+    return players[index];
   }
 
   render() {
@@ -63,7 +79,9 @@ export default class Game extends React.Component {
           <Well>
             <h1>Game</h1>
             {gameEndNotice}
-            {board}
+            <div>
+              {board}
+            </div>
 
             <Link to="/">Back</Link>
           </Well>
