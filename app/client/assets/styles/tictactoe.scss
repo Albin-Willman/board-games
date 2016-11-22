@@ -1,0 +1,104 @@
+.board {
+  padding: 10px;
+  margin: 0 auto;
+  width: 320px;
+  background-color: #444;
+  .cell {
+    display: inline-block;
+    margin: 10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    &.cross,
+    &.circle {
+      cursor: default;
+      position: relative;
+    }
+  }
+
+  .cross:after,
+  .cross:before {
+    content: '';
+    position: absolute;
+    background-color: black;
+    width: 10px;
+    height: 60px;
+    top: 10px;
+    left: 35px;
+  }
+  .cross:after {
+    transform: rotate(45deg);
+  }
+  .cross:before {
+    transform: rotate(-45deg);
+  }
+  .circle:after,
+  .circle:before {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .circle:before {
+    background-color: black;
+    width: 60px;
+    height: 60px;
+    top: 10px;
+    left: 10px;
+  }
+
+  .circle:after {
+    background-color: white;
+    width: 40px;
+    height: 40px;
+    top: 20px;
+    left: 20px;
+  }
+
+  .winning.circle:before,
+  .winning.cross:after,
+  .winning.cross:before {
+    background-color: gold;
+    -webkit-animation: win 1.1s infinite ease;
+    animation: win 1.1s infinite ease;
+  }
+
+  &.ended .cell {
+    cursor: defaut;
+  }
+}
+
+@-webkit-keyframes win {
+  0% {
+    background-color: gold;
+  }
+  25% {
+    background-color: silver;
+  }
+  75% {
+    background-color: bronze;
+  }
+  100% {
+    background-color: gold;
+  }
+}
+
+@keyframes load {
+  0% {
+    background-color: gold;
+  }
+  25% {
+    background-color: silver;
+  }
+  75% {
+    background-color: bronze;
+  }
+  100% {
+    background-color: gold;
+  }
+}
+
+
+

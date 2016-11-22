@@ -1,0 +1,64 @@
+.quarto {
+  .pieces {
+    margin-bottom: 20px;
+    &.select-next .piece:hover {
+      box-shadow: 0 0 1em 0 #333;
+    }
+    &.select-next .piece {
+      cursor: pointer;
+    }
+  }
+  .piece {
+    border: 30px solid gold;
+    margin: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    &.tall {
+      border-top-color: silver;
+    }
+    &.square {
+      border-left-color: silver;
+    }
+    &.dark {
+      border-bottom-color: silver;
+    }
+    &.flat {
+      border-right-color: silver;
+    }
+    &.free {
+      border-color: white;
+    }
+    &.selected {
+      box-shadow: 0 0 1em 0 #333;
+    }
+    &.winning {
+      @extend .rotate;
+    }
+  }
+
+  .board {
+    width: 340px;
+    padding: 10px;
+    margin: 0 auto;
+    &.place-piece .free:hover {
+      box-shadow: 0 0 1em 0 #fefefe;
+    }
+  }
+}
+
+.rotate {
+  -webkit-animation: rotate 4s infinite linear;
+  animation: rotate 4s infinite linear;
+}
+
+
+@-webkit-keyframes rotate {
+  from {-webkit-transform: rotate(0deg);}
+  to {-webkit-transform: rotate(359deg);}
+}
+
+@-moz-keyframes rotate {
+  from {-moz-transform: rotate(0deg);}
+  to {-moz-transform: rotate(359deg);}
+}
+
