@@ -2,7 +2,11 @@
 
 ## Vision
 
-This is a small web app where you could play board games. The first games implemented 
+This is a small web app where you could play board games. The first games implemented are tic tac toe and Quarto.
+
+Te goal is to make it easy to develop and add games as I go and try to build a framework for developing reasonable game AIs.
+
+Maybe provide a interface for people to develop their own AIs to the games.
 
 ## Testing
 
