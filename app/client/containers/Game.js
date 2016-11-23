@@ -6,6 +6,7 @@ import Well from 'react-bootstrap/lib/Well';
 import Button from 'react-bootstrap/lib/Button';
 import { Link } from 'react-router';
 import fetchJudge from 'utils/judges';
+import makeMove from 'utils/make-move';
 
 export default class Game extends React.Component {
   state = { game: {}, uid: firebase.auth().currentUser.uid, judge: null }
@@ -25,6 +26,7 @@ export default class Game extends React.Component {
     });
 
     this.ref.on('value', (snap) => {
+      console.log(snap.val(), snap.key);
       this.setState({ game: snap.val() });
     });
   }
@@ -35,29 +37,12 @@ export default class Game extends React.Component {
 
   makeMove = (action) => {
     var { game, judge, uid } = this.state;
-    if(game.nextPlayer === uid){
-      action.uid = uid;
-      var newGame = judge.makeMove(game, action);
-      newGame.nextPlayer = this.getNextPlayer(game, uid);
-      this.ref.set(newGame);
-    }
-  }
-
-  getNextPlayer(game, uid) {
-    var { nextPlayer, players, gameEnded } = game;
-    if(gameEnded) {
-      return '-';
-    }
-    if(nextPlayer !== uid) {
-      return nextPlayer;
-    }
-    var index = (players.indexOf(uid) + 1) % players.length;
-    return players[index];
+    makeMove(this.ref, game, judge, uid, action);
   }
 
   render() {
     var { game, judge } = this.state;
-    if(!judge) {
+    if(!judge || !game) {
       return <p>'Waiting for judge'</p>;
     }
     var gameEnded = !!(game.actions && game.actions.length === 9 || game.winningLine || game.gameEnded);

@@ -1,5 +1,5 @@
 import React from 'react';
-import Quarto from 'components/Boards/Quarto';
+import Quarto from '../../components/Boards/Quarto';
 
 export const SELECT_NEXT = 'selectNext@quarto';
 export const PLACE_PIECE = 'placePiece@quarto';

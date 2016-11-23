@@ -34,13 +34,17 @@ function checkLine(line, board) {
 
 export function makeMove(game, action) {
   var actions = game.actions || [];
+  actions = [...actions, action];
   var player = (actions.length % 2) + 1;
   var board = [...game.board];
   board[action.payload] = player;
+  var winningLine = checkWin(board);
+  var gameEnded = winningLine || actions.length === board.length;
   return { ...game,
-    actions: [...actions, action],
-    board: board,
-    winningLine: checkWin(board),
+    actions,
+    board,
+    winningLine,
+    gameEnded,
   };
 }
 

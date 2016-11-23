@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SELECT_NEXT, PLACE_PIECE } from 'utils/games/Quarto';
+import { SELECT_NEXT, PLACE_PIECE } from '../../utils/games/Quarto';
 export default class Board extends React.Component {
 
   static propTypes = {
