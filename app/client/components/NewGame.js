@@ -48,10 +48,11 @@ export default class NewGame extends React.Component {
       this.setState({error: 'No game selected'});
       return;
     }
+    var players = this.setUpPlayers(options.gameType);
     var judge = fetchJudge(type);
-    var game = judge.newGame(options);
-    game.players = this.setUpPlayers(options.gameType);
-    game.nextPlayer = game.players[randomInteger(2)];
+    var game = judge.newGame(players);
+    game.players = game.players || players;
+    game.nextPlayer = game.nextPlayer || randomInteger(game.players.length);
     this.props.createGame(game);
   }
 

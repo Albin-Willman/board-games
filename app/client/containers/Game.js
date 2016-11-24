@@ -26,7 +26,6 @@ export default class Game extends React.Component {
     });
 
     this.ref.on('value', (snap) => {
-      console.log(snap.val(), snap.key);
       this.setState({ game: snap.val() });
     });
   }

@@ -4,7 +4,7 @@ import Quarto from '../../components/Boards/Quarto';
 export const SELECT_NEXT = 'selectNext@quarto';
 export const PLACE_PIECE = 'placePiece@quarto';
 
-export function newGame(){
+export function newGame(players){
   var board = new Array(16);
   board.fill('-');
   var pieces = [];
@@ -12,8 +12,19 @@ export function newGame(){
     pieces.push(i);
   }
   var nextPiece = '-';
+  players = setUpPlayers(players);
+  var nextPlayer = Math.random > 0.5 ? 0 : 2;
 
-  var game = { name: 'Quarto', type: 'q', actions: [], board, pieces, nextPiece };
+  var game = {
+    name: 'Quarto',
+    type: 'q',
+    actions: [],
+    board,
+    pieces,
+    players,
+    nextPlayer,
+    nextPiece,
+  };
   return game;
 }
 
@@ -37,6 +48,15 @@ export function renderGame(game, makeAndSaveMove) {
   return (<Quarto
               game={game}
               makeMove={makeAndSaveMove}/>);
+}
+
+function setUpPlayers(players) {
+  return [
+    players[0],
+    players[1],
+    players[1],
+    players[0],
+  ];
 }
 
 function checkForWin(board) {
