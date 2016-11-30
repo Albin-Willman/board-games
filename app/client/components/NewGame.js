@@ -67,7 +67,9 @@ export default class NewGame extends React.Component {
 
   buildGameOptions() {
     var setOption = (e) => {
-      this.setState({ options: { gameType: e.target.value } });
+      var { options } = this.state;
+      options.gameType = e.target.value;
+      this.setState({ options });
     };
     return (<div>
       <label>How do you want to play</label>

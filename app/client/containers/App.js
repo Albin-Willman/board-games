@@ -3,6 +3,7 @@ import React from 'react';
 
 // ReactBoostrap components:
 import Grid from 'react-bootstrap/lib/Grid';
+import TopBar from 'components/Layout/TopBar.jsx';
 
 import * as firebase from 'firebase';
 import { browserHistory } from 'react-router';
@@ -36,9 +37,12 @@ export default class App extends React.Component {
     }
 
     return (
-      <Grid style={{marginTop: '100px'}}>
-        {this.props.children}
-      </Grid>
+      <div>
+        <TopBar />
+        <Grid style={{marginTop: '100px'}}>
+          {this.props.children}
+        </Grid>
+      </div>
       );
     }
   }

@@ -9,27 +9,27 @@ import Radio from 'react-bootstrap/lib/Radio';
 import NewGame from 'components/NewGame';
 import { browserHistory } from 'react-router';
 
-import { Link } from 'react-router';
-
 export default class Home extends React.Component {
   state = {
-    games: [],
     user: firebase.auth().currentUser,
+    selectedGame: null,
+    options: {},
+    users: [],
   }
   permissionsRef = null;
+  gamesRef = null;
   user = null;
+  usersRef = null;
 
   componentWillMount() {
     this.user = this.state.user.uid;
     this.permissionsRef = firebase.database().ref(`permissions/${this.user}/games`);
-
-    this.permissionsRef.on('child_added', (snap) => {
-      this.setState({
-        games: [...this.state.games, {
-          data: snap.val(),
-          key: snap.key,
-        }],
-      });
+    this.gamesRef = firebase.database().ref('games');
+    this.usersRef = firebase.database().ref(`public-users`);
+    console.log(this.usersRef);
+    this.usersRef.on('child_added', (snap) => {
+      console.log('hej');
+      console.log(snap.val());
     });
   }
 
@@ -37,21 +37,34 @@ export default class Home extends React.Component {
     this.permissionsRef.off();
   }
 
-  createGameLink = (game, i) => {
-    return <div key={i}><Link to={`/games/${game.key}`}>{game.data.name}</Link></div>;
+  createGame = (game) => {
+    game.users = {};
+    game.users[this.user] = true;
+
+    var permission = {
+      access: true,
+      name: game.name
+    };
+    var gamesRef = this.gamesRef;
+    var ref = this.permissionsRef.push(permission, function() {
+      var games = {};
+      games[ref.key] = game;
+      gamesRef.update(games,
+        (error) => {
+          if(error) {
+            console.log(error);
+          } else {
+            browserHistory.push(`/games/${ref.key}`);
+          }
+      });
+    });
   }
 
   render() {
-    var games = this.state.games;
-    var links = games.map(this.createGameLink);
     return (
       <Row>
         <Col md={6} mdOffset={3}>
-          <Well>
-            <h1>Your Games</h1>
-            <p>Games: {games.length}</p>
-            {links}
-          </Well>
+          <NewGame createGame={this.createGame} uid={this.user}/>
         </Col>
       </Row>
       );
