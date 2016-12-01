@@ -20,7 +20,8 @@ export default (
       <Route path="login" component={Login}/>
       <Route path="terms" component={Terms}/>
       <Route path="games" component={SkipPage} onEnter={requireAuth}>
-        <IndexRoute component={NewGamePage} />
+        <IndexRoute component={Home} />
+        <Route path="new" component={NewGamePage} />
         <Route path=":id" component={Game} />
       </Route>
     </Route>

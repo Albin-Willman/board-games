@@ -19,8 +19,10 @@ export default class App extends React.Component {
         loggedIn: (null !== user),
       });
       if(user) {
-        browserHistory.push('/');
         console.log('Logged in: ', user);
+        if(window.location.pathname === '/login') {
+          browserHistory.push('/');
+        }
       } else {
         console.log('Not logged in');
       }

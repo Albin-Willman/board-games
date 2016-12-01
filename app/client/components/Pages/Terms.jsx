@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
 
 export default class Terms extends React.Component {
+
   render() {
 
     return (

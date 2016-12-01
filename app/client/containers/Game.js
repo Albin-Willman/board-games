@@ -39,29 +39,54 @@ export default class Game extends React.Component {
     makeMove(this.ref, game, judge, uid, action);
   }
 
+  buildGameEndNotice() {
+    var { game } = this.state;
+    if(!game.gameEnded) {
+      return false;
+    }
+    if(game.winningLine) {
+      var winnerId = game.actions[game.actions.length - 1].uid;
+      var username = this.findUsername(winnerId);
+      return <p>Congratulations {username}, you won!</p>;
+    }
+    return <p>Game ended in a draw</p>;
+  }
+
+  buildTurnNotice() {
+    var { game } = this.state;
+    if(game.gameEnded) {
+      return false;
+    }
+    var player = game.players[game.nextPlayer];
+    return <p>Next player is: {player.username}</p>;
+  }
+
+  findUsername(uid) {
+    var { players } = this.state.game;
+    for(var i = 0; i < players.length; i += 1) {
+      var player = players[i]
+      if(uid === player.id) {
+        return player.username;
+      }
+    }
+    return 'The shadow';
+  }
+
   render() {
     var { game, judge } = this.state;
     if(!judge || !game) {
       return <p>'Waiting for judge'</p>;
     }
-    var gameEnded = !!(game.actions && game.actions.length === 9 || game.winningLine || game.gameEnded);
-    var gameEndNotice;
-    if(gameEnded) {
-      if(game.winningLine) {
-        gameEndNotice = (
-          <p>
-            Congratulatios player {game.board[game.winningLine[0]]}, you won!
-          </p>);
-      } else {
-        gameEndNotice = <p>Game ended in a draw</p>;
-      }
-    }
+    var gameEndNotice = this.buildGameEndNotice();
+    var turnNotice = this.buildTurnNotice();
+
     var board = judge.renderGame(game, this.makeMove);
     return (
       <Row>
         <Col md={10} mdOffset={1}>
           <Well>
             <h1>Game</h1>
+            {turnNotice}
             {gameEndNotice}
             <div>
               {board}

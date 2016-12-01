@@ -1,5 +1,5 @@
 export default function(ref, game, judge, uid, action) {
-  if(game.players[game.nextPlayer] === uid) {
+  if(game.players[game.nextPlayer].id === uid) {
     action.uid = uid;
     var newGame = judge.makeMove(game, action);
     newGame.nextPlayer = getNextPlayer(game);

@@ -14,27 +14,34 @@ export default class Home extends React.Component {
     user: firebase.auth().currentUser,
     selectedGame: null,
     options: {},
-    users: [],
+    players: [],
+    publicPlayer: false,
   }
   permissionsRef = null;
   gamesRef = null;
   user = null;
-  usersRef = null;
+  playersRef = null;
+
 
   componentWillMount() {
     this.user = this.state.user.uid;
     this.permissionsRef = firebase.database().ref(`permissions/${this.user}/games`);
     this.gamesRef = firebase.database().ref('games');
-    this.usersRef = firebase.database().ref(`public-users`);
-    console.log(this.usersRef);
-    this.usersRef.on('child_added', (snap) => {
-      console.log('hej');
-      console.log(snap.val());
-    });
+    this.playersRef = firebase.database().ref(`public-users`);
+    this.playersRef.on('child_added', (snap) => {
+      var id = snap.key;
+      var newState = {
+        players: [...this.state.players, { username: snap.val().username, id }],
+      };
+      if(id === this.user) {
+        newState.publicPlayer = true;
+      }
+      this.setState(newState);
+    }).bind(this);
   }
 
   componentWillUnmount() {
-    this.permissionsRef.off();
+    this.playersRef.off();
   }
 
   createGame = (game) => {
@@ -61,10 +68,16 @@ export default class Home extends React.Component {
   }
 
   render() {
+    var { players, publicPlayer } = this.state;
     return (
       <Row>
         <Col md={6} mdOffset={3}>
-          <NewGame createGame={this.createGame} uid={this.user}/>
+          <NewGame
+            createGame={this.createGame}
+            uid={this.user}
+            players={players}
+            publicPlayer={publicPlayer}
+            />
         </Col>
       </Row>
       );
