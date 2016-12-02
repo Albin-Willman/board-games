@@ -52,10 +52,13 @@ export default class Home extends React.Component {
       access: true,
       name: game.name
     };
+    var inviteOtherPlayers = this.inviteOtherPlayers;
     var gamesRef = this.gamesRef;
     var ref = this.permissionsRef.push(permission, function() {
       var games = {};
       games[ref.key] = game;
+      inviteOtherPlayers(game.players, ref.key, game.name);
+
       gamesRef.update(games,
         (error) => {
           if(error) {
@@ -65,6 +68,20 @@ export default class Home extends React.Component {
           }
       });
     });
+  }
+
+  inviteOtherPlayers = (players, gameId, gameName) => {
+    for(var i = 0; i < players.length; i += 1) {
+      var { id } = players[i];
+      if(id !== this.user && id !== 'ai') {
+        this.invitePlayer(id, gameId, gameName);
+      }
+    }
+  }
+
+  invitePlayer(playerId, gameId, gameName) {
+    var ref = firebase.database().ref(`game-offers/${playerId}/${gameId}`);
+    ref.set(gameName);
   }
 
   render() {

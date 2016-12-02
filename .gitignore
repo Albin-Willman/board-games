@@ -1,2 +1,3 @@
 node_modules/
 app/client/config/firebase.config.js
+.firebaserc
