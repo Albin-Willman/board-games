@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import * as firebase from 'firebase';
-import * as config from '../config/firebase.config.js';
-firebase.initializeApp(config);
+import firebase from 'utils/firebase.jsx';
 var firstTry = true;
 export default function requireAuth(nextState, replace) {
   if(null === firebase.auth().currentUser) {

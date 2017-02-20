@@ -28,7 +28,7 @@ export function newGame(players){
   return game;
 }
 
-export function makeMove(game, action, uid) {
+export function makeMove(game, action) {
   var newGame = getNewGameState(game, action);
   var previousActions = game.actions || [];
   newGame.actions = [ ...previousActions, action];
@@ -39,7 +39,7 @@ export function makeMove(game, action, uid) {
   if(winningLine) {
     newGame.winningLine = winningLine;
     newGame.gameEnded = true;
-    newGame.winner = (game.actions.length % 2) + 1;
+    newGame.winner = findWinner(game.nextPlayer);
   }
   return newGame;
 }
@@ -57,6 +57,14 @@ function setUpPlayers(players) {
     players[1],
     players[0],
   ];
+}
+
+function findWinner(playerIndex) {
+  switch(playerIndex) {
+    case 3: return 0;
+    case 2: return 1;
+    default: return playerIndex;
+  }
 }
 
 function checkForWin(board) {

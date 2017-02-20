@@ -43,8 +43,21 @@ export default class Board extends React.Component {
       className = `${className} ended`
     }
     return (
-      <div className="board">
-        {cells}
+      <div>
+        <div className="board">
+          {cells}
+        </div>
+        <details>
+          <summary>
+            Rules
+          </summary>
+          <h2>Tic tac toe</h2>
+          <h3>Game play</h3>
+          <p>
+            The players takes turns placing markers on the board until the board is full or
+            one player has three markers in a row.
+          </p>
+        </details>
       </div>
       );
     }

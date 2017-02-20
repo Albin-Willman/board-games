@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import * as firebase from 'firebase';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -8,10 +10,10 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Radio from 'react-bootstrap/lib/Radio';
 import NewGame from 'components/NewGame';
 import Invite from 'components/Utils/Invite.jsx';
-import { browserHistory } from 'react-router';
 
 import { Link } from 'react-router';
 
+@connect(s => s)
 export default class Home extends React.Component {
   state = {
     games: [],

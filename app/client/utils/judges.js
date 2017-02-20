@@ -9,7 +9,8 @@ export default function fetchJudge(type) {
     default: {
       return {
         newGame: () => {},
-        makeMove: () => {}
+        makeMove: () => {},
+        renderGame: () => { return false },
       };
     }
   }

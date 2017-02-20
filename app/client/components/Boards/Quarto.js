@@ -90,6 +90,30 @@ export default class Board extends React.Component {
       <div className={className}>
         <div className={piecesClass}>{pieces}</div>
         <div className={boardClass}>{cells}</div>
+        <details>
+          <summary>
+            Rules
+          </summary>
+          <h2>Quarto</h2>
+          <h3>Pieces</h3>
+          <p>
+            There are 16 unique pieces in Quarto each pieces has 4 attributes that can have one of
+            two values. In this digital version each attribute is represented by on quarter of the
+            circle representing the piece, the quarter can be silver or gold.
+          </p>
+          <h3>Game play</h3>
+          <p>
+            One player starts by selecting a piece then the other player places it on an unoccupied
+            slot on the board. After placeing a piece the second player selects a new piece for the
+            first player. This goes on untill one player has won or all pieces are on the board.
+          </p>
+          <h3>Winning</h3>
+          <p>
+            A player wins if a piece that player places on the board completes a row or a group in
+            such a way that there are four pieces sharing the same value of any one attribute. For
+            example if there are four pieces with a golden top on a single row.
+          </p>
+        </details>
       </div>
       );
     }

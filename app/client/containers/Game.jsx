@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import * as firebase from 'firebase';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -6,41 +8,36 @@ import Well from 'react-bootstrap/lib/Well';
 import Button from 'react-bootstrap/lib/Button';
 import { Link } from 'react-router';
 import fetchJudge from 'utils/judges';
-import makeMove from 'utils/make-move';
 
+import { connectToGame, disconnectFromGame, makeMove } from 'services/game-services.jsx';
+
+@connect(s => {
+  return { game: s.games.game };
+})
 export default class Game extends React.Component {
-  state = { game: {}, uid: firebase.auth().currentUser.uid, judge: null }
-  ref = null;
-
   static propTypes = {
+    game: React.PropTypes.object,
     params: React.PropTypes.object,
+    dispatch: React.PropTypes.func,
   }
 
   componentWillMount() {
-    var user = this.state.uid;
-    var id = this.props.params.id;
-    this.ref = firebase.database().ref(`games/${id}`);
-
-    this.ref.once('value', (snap) => {
-      this.setState({ judge: fetchJudge(snap.val().type) });
-    });
-
-    this.ref.on('value', (snap) => {
-      this.setState({ game: snap.val() });
-    });
+    var { dispatch, params } = this.props;
+    dispatch(connectToGame(params.id));
   }
 
   componentWillUnmount() {
-    this.ref.off();
+    var { dispatch } = this.props;
+    dispatch(disconnectFromGame());
   }
 
   makeMove = (action) => {
-    var { game, judge, uid } = this.state;
-    makeMove(this.ref, game, judge, uid, action);
+    var { dispatch, game } = this.props;
+    dispatch(makeMove(action));
   }
 
   buildGameEndNotice() {
-    var { game } = this.state;
+    var { game } = this.props;
     if(!game.gameEnded) {
       return false;
     }
@@ -53,8 +50,8 @@ export default class Game extends React.Component {
   }
 
   buildTurnNotice() {
-    var { game } = this.state;
-    if(game.gameEnded) {
+    var { game } = this.props;
+    if(game.gameEnded || !game.nextPlayer) {
       return false;
     }
     var player = game.players[game.nextPlayer];
@@ -62,7 +59,7 @@ export default class Game extends React.Component {
   }
 
   findUsername(uid) {
-    var { players } = this.state.game;
+    var { players } = this.props.game;
     for(var i = 0; i < players.length; i += 1) {
       var player = players[i]
       if(uid === player.id) {
@@ -73,7 +70,8 @@ export default class Game extends React.Component {
   }
 
   render() {
-    var { game, judge } = this.state;
+    var { game } = this.props;
+    var judge = fetchJudge(game.type);
     if(!judge || !game) {
       return <p>'Waiting for judge'</p>;
     }
@@ -91,7 +89,6 @@ export default class Game extends React.Component {
             <div>
               {board}
             </div>
-
             <Link to="/">Back</Link>
           </Well>
         </Col>

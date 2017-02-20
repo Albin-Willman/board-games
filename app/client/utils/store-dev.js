@@ -3,6 +3,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 
 import { reducers } from 'reducers';
+
 const reducer = combineReducers(reducers);
 
 import { DevTools } from './main-dev';

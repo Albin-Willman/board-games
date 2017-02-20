@@ -4,7 +4,7 @@ import App from 'containers/App';
 import Home from 'containers/Home';
 import Profile from 'containers/Profile.jsx';
 import Login from 'containers/Login';
-import Game from 'containers/Game';
+import Game from 'containers/Game.jsx';
 import NewGamePage from 'containers/NewGamePage.jsx';
 
 

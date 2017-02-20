@@ -73,7 +73,6 @@ export default class NewGame extends React.Component {
       ];
     }
     var { selectedPlayers } = this.state;
-    console.log(selectedPlayers);
     var allPlayers = selectedPlayers.filter((e) => { return e !== null; })
     return allPlayers;
 
