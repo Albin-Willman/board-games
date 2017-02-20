@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { connect } from 'react-redux';
 
 // ReactBoostrap components:
 import Grid from 'react-bootstrap/lib/Grid';
@@ -8,6 +9,9 @@ import TopBar from 'components/Layout/TopBar.jsx';
 import * as firebase from 'firebase';
 import { browserHistory } from 'react-router';
 
+@connect(s => {
+  return { profile: s.profile.profile };
+})
 export default class App extends React.Component {
   state = {
     loggedIn: (null !== firebase.auth().currentUser),
@@ -19,6 +23,7 @@ export default class App extends React.Component {
         loggedIn: (null !== user),
       });
       if(user) {
+
         console.log('Logged in: ', user);
         if(window.location.pathname === '/login') {
           browserHistory.push('/');
