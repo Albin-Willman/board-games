@@ -37,10 +37,10 @@ export default class Board extends React.Component {
     if(!board) {
       return false;
     }
-    var cells = board.map(this.buildCell)
+    var cells = board.map(this.buildCell);
     var className = 'board';
     if(gameEnded) {
-      className = `${className} ended`
+      className = `${className} ended`;
     }
     return (
       <div>
@@ -59,6 +59,6 @@ export default class Board extends React.Component {
           </p>
         </details>
       </div>
-      );
-    }
+    );
   }
+}

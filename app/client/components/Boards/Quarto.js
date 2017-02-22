@@ -9,6 +9,7 @@ export default class Board extends React.Component {
       gameEnded: React.PropTypes.bool,
       board: React.PropTypes.array,
       pieces: React.PropTypes.array,
+      nextPiece: React.PropTypes.string,
     }),
     makeMove: React.PropTypes.func,
   }
@@ -42,7 +43,7 @@ export default class Board extends React.Component {
     if(data === '-') {
       classes.push('free');
       if(!gameEnded && nextPiece !== '-') {
-        var clickFunction = () => {
+        clickFunction = () => {
           makeMove({ payload: i, action: PLACE_PIECE });
         };
       }
@@ -59,7 +60,7 @@ export default class Board extends React.Component {
     }
     var clickFunction = () => {};
     if(!gameEnded && nextPiece === '-') {
-      var clickFunction = () => {
+      clickFunction = () => {
         makeMove({ payload: i, action: SELECT_NEXT });
       };
     }
@@ -73,12 +74,12 @@ export default class Board extends React.Component {
       return false;
     }
     var cells = board.map(this.buildCell);
-    var pieces = (pieces || []).map(this.buildPiece);
+    pieces = (pieces || []).map(this.buildPiece);
     var className = 'table quarto';
     var piecesClass = 'pieces';
     var boardClass = 'board';
     if(gameEnded) {
-      className = `${className} ended`
+      className = `${className} ended`;
     } else {
       if(nextPiece === '-') {
         piecesClass = `${piecesClass} select-next`;
@@ -115,6 +116,6 @@ export default class Board extends React.Component {
           </p>
         </details>
       </div>
-      );
-    }
+    );
   }
+}

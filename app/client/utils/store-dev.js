@@ -12,19 +12,19 @@ var store;
 
 export function makeStore(initialState = {}, middlewares = [reduxThunk]) {
 
-    var persistParam = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
+  var persistParam = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
 
-    var finalCreateStore = compose(
-        applyMiddleware(...middlewares),
-        DevTools.instrument(),
-        require('redux-devtools').persistState(persistParam)
-    )(createStore);
+  var finalCreateStore = compose(
+    applyMiddleware(...middlewares),
+    DevTools.instrument(),
+    require('redux-devtools').persistState(persistParam)
+  )(createStore);
 
-    store = finalCreateStore(reducer, initialState);
+  store = finalCreateStore(reducer, initialState);
 
-    return store;
+  return store;
 }
 
 export function dispatch(action) {
-    store.dispatch(action);
+  store.dispatch(action);
 }

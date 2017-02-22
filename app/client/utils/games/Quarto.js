@@ -4,7 +4,7 @@ import Quarto from '../../components/Boards/Quarto';
 export const SELECT_NEXT = 'selectNext@quarto';
 export const PLACE_PIECE = 'placePiece@quarto';
 
-export function newGame(players){
+export function newGame(players) {
   var board = new Array(16);
   board.fill('-');
   var pieces = [];
@@ -12,7 +12,6 @@ export function newGame(players){
     pieces.push(i);
   }
   var nextPiece = '-';
-  players = setUpPlayers(players);
   var nextPlayer = Math.random > 0.5 ? 0 : 2;
 
   var game = {
@@ -21,27 +20,27 @@ export function newGame(players){
     actions: [],
     board,
     pieces,
-    players,
+    players: setUpPlayers(players),
     nextPlayer,
     nextPiece,
   };
   return game;
 }
 
-export function makeMove(game, action) {
-  var newGame = getNewGameState(game, action);
+export function makeMove(oldGame, action) {
+  var game = getNewGameState(oldGame, action);
   var previousActions = game.actions || [];
-  newGame.actions = [ ...previousActions, action];
-  if(newGame.pieces.length === 0) {
-    newGame.gameEnded = true;
+  game.actions = [...previousActions, action];
+  if(game.pieces.length === 0) {
+    game.gameEnded = true;
   }
-  var winningLine = checkForWin(newGame.board);
+  var winningLine = checkForWin(game.board);
   if(winningLine) {
-    newGame.winningLine = winningLine;
-    newGame.gameEnded = true;
-    newGame.winner = findWinner(game.nextPlayer);
+    game.winningLine = winningLine;
+    game.gameEnded = true;
+    game.winner = findWinner(game.nextPlayer);
   }
-  return newGame;
+  return game;
 }
 
 export function renderGame(game, makeAndSaveMove) {
@@ -97,7 +96,7 @@ function checkVerticalLines(board) {
   }
 }
 
-function checkHorizontalLines(board){
+function checkHorizontalLines(board) {
   for (var i = 0; i < 16; i += 4) {
     var line = [];
     for(var j = 0; j < 4; j += 1) {
@@ -116,7 +115,7 @@ function checkLine(board, line) {
     win = win & board[line[i]];
     winReverse = winReverse & (15-board[line[i]]);
   }
-  if(win > 0 || winReverse > 0){
+  if(win > 0 || winReverse > 0) {
     return true;
   }
   return false;
@@ -124,7 +123,7 @@ function checkLine(board, line) {
 
 function getNewGameState(game, action) {
   if(action.action === SELECT_NEXT) {
-    return selectNext(game, action.payload);;
+    return selectNext(game, action.payload);
   }
   return placePiece(game, action.payload);
 }
@@ -136,11 +135,13 @@ function selectNext(game, piece) {
 }
 
 function placePiece(game, slot) {
-  var board = [ ...game.board ];
+  var board = [...game.board];
   board[slot] = game.nextPiece;
-  var pieces = [ ...game.pieces ];
+  var pieces = [...game.pieces];
 
-  pieces = pieces.filter((p) => { return p !== game.nextPiece });
+  pieces = pieces.filter((p) => {
+    return p !== game.nextPiece;
+  });
 
   return { ...game,
     nextPiece: '-',

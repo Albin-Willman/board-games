@@ -14,25 +14,25 @@ config.output.filename = 'app.min.js';
 config.output.path = path.join(process.cwd(), 'dist');
 
 config.externals = {
-    react: 'React',
-    'react-dom': 'ReactDOM',
+  react: 'React',
+  'react-dom': 'ReactDOM',
 };
 
 config.plugins = [
-    new webpack.DefinePlugin(Object.assign({}, reappDevTools.json2env(appEnv), {
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    })),
-    new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false,
-        },
-    }),
+  new webpack.DefinePlugin(Object.assign({}, reappDevTools.json2env(appEnv), {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  })),
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false,
+    },
+  }),
 ];
 
 // remove the alias to development utilities
 config.resolve.alias = {
-    'utils/main': 'utils/main-dist',
-    'utils/store': 'utils/store-dist',
+  'utils/main': 'utils/main-dist',
+  'utils/store': 'utils/store-dist',
 };
 
 

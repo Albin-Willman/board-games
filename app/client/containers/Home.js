@@ -11,10 +11,6 @@ import {
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
-import Button from 'react-bootstrap/lib/Button';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import Radio from 'react-bootstrap/lib/Radio';
-import NewGame from 'components/NewGame';
 import Invite from 'components/Utils/Invite.jsx';
 
 import { Link } from 'react-router';
@@ -27,7 +23,7 @@ import { Link } from 'react-router';
 })
 export default class Home extends React.Component {
 
-  static proptypes = {
+  static propTypes = {
     dispatch: React.PropTypes.func,
     invites: React.PropTypes.array,
     games: React.PropTypes.array,

@@ -49,11 +49,11 @@ export default class Game extends React.Component {
   }
 
   buildTurnNotice() {
-    var { game } = this.props;
-    if(game.gameEnded || !game.nextPlayer) {
+    var { nextPlayer, gameEnded, players } = this.props.game
+    if(gameEnded || (!nextPlayer && nextPlayer !== 0)) {
       return false;
     }
-    var player = game.players[game.nextPlayer];
+    var player = players[nextPlayer];
     return <p>Next player is: {player.username}</p>;
   }
 

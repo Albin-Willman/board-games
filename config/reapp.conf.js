@@ -3,22 +3,22 @@
  */
 
 module.exports = {
-    appName: 'tic-tac-toe',
+  appName: 'tic-tac-toe',
 
-    host: '0.0.0.0',
-    port: 3000,
+  host: '0.0.0.0',
+  port: 3000,
 
-    // configure the proxy to the dev api server
-    proxyIsEnabled: true,
-    proxyHost: 'localhost',
-    proxyPort: 30001,
+  // configure the proxy to the dev api server
+  proxyIsEnabled: true,
+  proxyHost: 'localhost',
+  proxyPort: 30001,
 
-    // forward following urls to the api server
-    proxyUrls: [
-    ],
+  // forward following urls to the api server
+  proxyUrls: [
+  ],
 
-    // forward following rules
-    proxyRules: {
-        // '/foo': 'http://my-custom-server.com',
-    },
+  // forward following rules
+  proxyRules: {
+      // '/foo': 'http://my-custom-server.com',
+  },
 };
