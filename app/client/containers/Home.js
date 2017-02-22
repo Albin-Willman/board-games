@@ -1,7 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import * as firebase from 'firebase';
+import {
+  connectHomePage,
+  disconnectHomePage,
+  acceptInvite,
+  removeInvite,
+} from 'services/home-services.jsx';
+
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
@@ -13,69 +19,42 @@ import Invite from 'components/Utils/Invite.jsx';
 
 import { Link } from 'react-router';
 
-@connect(s => s)
+@connect(s => {
+  return {
+    games: s.games.games,
+    invites: s.newGame.invites,
+  };
+})
 export default class Home extends React.Component {
-  state = {
-    games: [],
-    invites: [],
-    user: firebase.auth().currentUser,
+
+  static proptypes = {
+    dispatch: React.PropTypes.func,
+    invites: React.PropTypes.array,
+    games: React.PropTypes.array,
   }
-  permissionsRef = null;
-  invitesRef = null;
-  user = null;
 
   componentWillMount() {
-    this.user = this.state.user.uid;
-    this.permissionsRef = firebase.database().ref(`permissions/${this.user}/games`);
-    this.invitesRef = firebase.database().ref(`game-offers/${this.user}`);
-
-    this.invitesRef.on('child_added', (snap) => {
-      this.setState({
-        invites: [...this.state.invites, {
-          name: snap.val(),
-          key: snap.key,
-        }],
-      });
-    });
-
-    this.invitesRef.on('child_removed', (snap) => {
-      var key = snap.key;
-      var invites = this.state.invites.filter((invite) => {
-        return invite.key !== key;
-      });
-      this.setState({ invites });
-    });
-
-    this.permissionsRef.on('child_added', (snap) => {
-      this.setState({
-        games: [...this.state.games, {
-          data: snap.val(),
-          key: snap.key,
-        }],
-      });
-    });
+    var { dispatch } = this.props;
+    dispatch(connectHomePage());
   }
 
   componentWillUnmount() {
-    this.permissionsRef.off();
-    this.invitesRef.off();
+    var { dispatch } = this.props;
+    dispatch(disconnectHomePage());
   }
 
   createGameLink = (game, i) => {
-    return <div key={i}><Link to={`/games/${game.key}`}>{game.data.name}</Link></div>;
+    return <div key={i}><Link to={`/games/${game.key}`}>{game.name}</Link></div>;
   }
 
   acceptGame = (gameId, gameName) => {
-    var permission = {
-      access: true,
-      name: gameName,
-    };
-    this.permissionsRef.child(gameId).set(permission);
-    this.removeInvite(gameId);
+    var { dispatch } = this.props;
+    dispatch(acceptInvite(gameName, gameId));
   }
 
   removeInvite = (gameId) => {
-    this.invitesRef.child(gameId).remove();
+    var { dispatch } = this.props;
+    dispatch(removeInvite(gameId));
   }
 
   createInviteRow = (invite, i) => {
@@ -87,7 +66,7 @@ export default class Home extends React.Component {
   }
 
   render() {
-    var { games, invites } = this.state;
+    var { games, invites } = this.props;
     var links = games.map(this.createGameLink);
     var invitesRow = invites.map(this.createInviteRow);
     return (

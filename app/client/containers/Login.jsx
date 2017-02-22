@@ -1,20 +1,21 @@
 import React from 'react';
-import * as firebase from 'firebase';
+import { connect } from 'react-redux';
+
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
 import Button from 'react-bootstrap/lib/Button';
-import { browserHistory } from 'react-router';
+import { login } from 'services/auth-services.jsx';
 
+@connect(s => s)
+export default class Login extends React.Component {
 
-export default class Home extends React.Component {
+  static proptypes = {
+    dispatch: React.PropTypes.func
+  }
 
   googleLogin = () => {
-    var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function(result) {
-      browserHistory.push('/');
-      console.log('sign in', result.credential.accessToken);
-    });
+    this.props.dispatch(login());;
   }
 
   render() {

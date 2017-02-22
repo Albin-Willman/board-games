@@ -1,9 +1,9 @@
 import React from 'react';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import App from 'containers/App';
+import App from 'containers/App.jsx';
 import Home from 'containers/Home';
 import Profile from 'containers/Profile.jsx';
-import Login from 'containers/Login';
+import Login from 'containers/Login.jsx';
 import Game from 'containers/Game.jsx';
 import NewGamePage from 'containers/NewGamePage.jsx';
 

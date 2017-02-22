@@ -1,5 +1,5 @@
-import { setProfile  } from 'actions/profile-actions.jsx';
 import firebase from 'utils/firebase.jsx';
+import { setProfile  } from 'actions/profile-actions.jsx';
 
 var ref;
 export function connectToProfile() {

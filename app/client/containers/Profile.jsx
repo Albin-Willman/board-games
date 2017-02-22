@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
@@ -87,7 +86,6 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Row>
         <Col md={6} mdOffset={3}>

@@ -1,5 +1,11 @@
 import React from 'react';
-import * as firebase from 'firebase';
+import { connect } from 'react-redux';
+import {
+  connectToNewGame,
+  disconnectFromNewGame,
+  createGame,
+} from 'services/new-game-services.jsx';
+
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
@@ -7,91 +13,41 @@ import Button from 'react-bootstrap/lib/Button';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Radio from 'react-bootstrap/lib/Radio';
 import NewGame from 'components/NewGame';
-import { browserHistory } from 'react-router';
 
-export default class Home extends React.Component {
-  state = {
-    user: firebase.auth().currentUser,
-    selectedGame: null,
-    options: {},
-    players: [],
-    publicPlayer: false,
+@connect(s => {
+  return s.newGame;
+})
+export default class NewGamePage extends React.Component {
+
+  static proptypes = {
+    players: React.PropTypes.array,
+    publicPlayer: React.PropTypes.bool,
+    currentUser: React.PropTypes.string,
   }
-  permissionsRef = null;
-  gamesRef = null;
-  user = null;
-  playersRef = null;
-
 
   componentWillMount() {
-    this.user = this.state.user.uid;
-    this.permissionsRef = firebase.database().ref(`permissions/${this.user}/games`);
-    this.gamesRef = firebase.database().ref('games');
-    this.playersRef = firebase.database().ref(`public-users`);
-    this.playersRef.on('child_added', (snap) => {
-      var id = snap.key;
-      var newState = {
-        players: [...this.state.players, { username: snap.val().username, id }],
-      };
-      if(id === this.user) {
-        newState.publicPlayer = true;
-      }
-      this.setState(newState);
-    }).bind(this);
+    var { dispatch } = this.props;
+    dispatch(connectToNewGame());
   }
 
   componentWillUnmount() {
-    this.playersRef.off();
+    var { dispatch } = this.props;
+    dispatch(disconnectFromNewGame());
   }
 
   createGame = (game) => {
-    game.users = {};
-    game.users[this.user] = true;
-
-    var permission = {
-      access: true,
-      name: game.name
-    };
-    var inviteOtherPlayers = this.inviteOtherPlayers;
-    var gamesRef = this.gamesRef;
-    var ref = this.permissionsRef.push(permission, function() {
-      var games = {};
-      games[ref.key] = game;
-      inviteOtherPlayers(game.players, ref.key, game.name);
-
-      gamesRef.update(games,
-        (error) => {
-          if(error) {
-            console.log(error);
-          } else {
-            browserHistory.push(`/games/${ref.key}`);
-          }
-      });
-    });
-  }
-
-  inviteOtherPlayers = (players, gameId, gameName) => {
-    for(var i = 0; i < players.length; i += 1) {
-      var { id } = players[i];
-      if(id !== this.user && id !== 'ai') {
-        this.invitePlayer(id, gameId, gameName);
-      }
-    }
-  }
-
-  invitePlayer(playerId, gameId, gameName) {
-    var ref = firebase.database().ref(`game-offers/${playerId}/${gameId}`);
-    ref.set(gameName);
+    var { dispatch } = this.props;
+    dispatch(createGame(game));
   }
 
   render() {
-    var { players, publicPlayer } = this.state;
+    var { players, publicPlayer, currentUser } = this.props;
     return (
       <Row>
         <Col md={6} mdOffset={3}>
           <NewGame
             createGame={this.createGame}
-            uid={this.user}
+            uid={currentUser}
             players={players}
             publicPlayer={publicPlayer}
             />

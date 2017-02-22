@@ -1,4 +1,4 @@
-export const SET_PROFILE = 'setProfilie@Profilie';
+export const SET_PROFILE = 'setProfilie@Profile';
 
 export function setProfile(profile) {
   return {

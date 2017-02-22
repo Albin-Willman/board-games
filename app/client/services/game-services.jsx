@@ -1,8 +1,8 @@
+import firebase from 'utils/firebase.jsx';
 import { setGame } from 'actions/game-actions.jsx';
 
 import fetchJudge from 'utils/judges';
 import doMakeMove from 'utils/make-move';
-import firebase from 'utils/firebase.jsx';
 
 var ref;
 export function connectToGame(gameId) {

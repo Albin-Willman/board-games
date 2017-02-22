@@ -1,5 +1,4 @@
 import React from 'react';
-import * as firebase from 'firebase';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 
@@ -9,20 +8,13 @@ import MenuItem from 'react-bootstrap/lib/MenuItem';
 import Nav from 'react-bootstrap/lib/Nav';
 
 export default class TopBar extends React.Component {
-  state = {
-    loggedIn: (null !== firebase.auth().currentUser),
-  }
 
-  componentWillMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.setState({
-        loggedIn: (null !== user),
-      });
-    });
+  static proptypes = {
+    loggedIn: React.PropTypes.bool,
   }
 
   BuildNav() {
-    if(!this.state.loggedIn) {
+    if(!this.props.loggedIn) {
       return (
       <Nav pullRight>
         <LinkContainer to="/terms">
